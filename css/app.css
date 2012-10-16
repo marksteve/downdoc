@@ -85,6 +85,10 @@ input:disabled {
     font-family: monospace;
 }
 
+#editor:disabled {
+    color: silver;
+}
+
 #output {
     position: absolute;
     top: 0;
