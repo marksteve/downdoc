@@ -55,6 +55,7 @@ input:disabled {
     background: rgba(255, 255, 255, 0.8);
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
     border-radius: 3px;
+    display: none;
 }
 
 #actions input {

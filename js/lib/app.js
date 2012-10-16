@@ -181,6 +181,7 @@
       apiConfig.immediate = true;
       return gapi.auth.authorize(apiConfig, function(token) {
         $("#loading").hide();
+        $("#actions").show();
         if (token) {
           app.actions.$auth.hide();
           app.actions.$save.show();
