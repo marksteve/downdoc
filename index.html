@@ -4,23 +4,36 @@
     <title>DownDoc</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/app.css">
-    <script src="js/lib/marked.js"></script>
-    <script src="js/lib/zepto.min.js"></script>
-    <script src="js/lib/app.js"></script>
-    <script>
-        var init = function() {
-            new App().init();
-        }
-    </script>
-    <script src="https://apis.google.com/js/client.js?onload=init"></script>
 </head>
 <body>
-    <textarea id="editor" disabled="disabled"></textarea>
-    <div id="preview"></div>
-    <a href="#" id="auth">Connect to Drive</a>
+    <div id="actions">
+        <input type="button" class="auth" value="Connect to Drive">
+        <input type="button" class="save" value="Save as a Google document">
+        <input type="text" class="title" value="Untitled Document">
+        <input type="button" class="upload" value="Save">
+        <input type="button" class="savecancel" value="Cancel">
+    </div>
+
+    <form><textarea name="editor" id="editor" disabled="disabled">#DownDoc
+
+Write your [Google documents](https://drive.google.com) in [Markdown](http://github.github.com/github-flavored-markdown)</textarea></form>
+
+    <div id="output"></div>
+
     <div id="ack">
         DownDoc by <a href="https://twitter.com/themarksteve" target="_blank">@themarksteve</a> /
         <a href="https://github.com/marksteve/downdoc" target="_blank">Github</a>
     </div>
+
+    <div id="loading">
+        <span>Loading&hellip;</span>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+    <script src="js/lib/spine.js"></script>
+    <script src="js/lib/marked.js"></script>
+    <script src="js/lib/app.js"></script>
+    <script src="//apis.google.com/js/client.js?onload=init"></script>
 </body>
 </html>
