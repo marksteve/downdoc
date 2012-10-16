@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+    <title>DownDoc</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/app.css">
+    <script src="js/lib/marked.js"></script>
+    <script src="js/lib/zepto.min.js"></script>
+    <script src="js/lib/app.js"></script>
+    <script>
+        var init = function() {
+            new App().init();
+        }
+    </script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+</head>
+<body>
+    <textarea id="editor" disabled="disabled"></textarea>
+    <div id="preview"></div>
+    <a href="#" id="auth">Connect to Drive</a>
+    <div id="ack">
+        DownDoc by <a href="https://twitter.com/themarksteve" target="_blank">@themarksteve</a> /
+        <a href="https://github.com/marksteve/downdoc" target="_blank">Github</a>
+    </div>
+</body>
+</html>
