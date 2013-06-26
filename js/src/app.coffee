@@ -23,6 +23,7 @@ class Actions extends Spine.Controller
         ".title": "$title"
         ".upload": "$upload"
         ".savecancel": "$savecancel"
+        ".docurl": "$docurl"
     auth: (e) =>
         apiConfig.immediate = false
         gapi.auth.authorize(apiConfig, @proxy((token) ->
@@ -90,6 +91,14 @@ class Actions extends Spine.Controller
                     .data("oldval", @$save.val())
                     .val("Saved as #{title}")
                     .show()
+                @$docurl
+                    .html($("<a>")
+                        .attr("href", doc.alternateLink)
+                        .attr("target", "_blank")
+                        .append($("<img>")
+                            .attr("src", doc.iconLink)
+                            .addClass("icon"))
+                        .text(doc.alternateLink))
                 setTimeout(@proxy(->
                     @$save.val(@$save.data("oldval"))
                     ), 3000)

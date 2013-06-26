@@ -73,6 +73,14 @@ input:disabled {
     100% { -webkit-transform: rotate(2deg); }
 }
 
+#actions .docurl {
+    font-size: 80%;
+}
+
+#actions .docurl a {
+    margin: 0 0.5em;
+}
+
 #editor {
     position: absolute;
     top: 0;
