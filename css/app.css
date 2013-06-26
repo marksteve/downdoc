@@ -81,6 +81,11 @@ input:disabled {
     margin: 0 0.5em;
 }
 
+#actions .docurl img {
+    margin-right: 0.5em;
+    vertical-align: middle;
+}
+
 #editor {
     position: absolute;
     top: 0;

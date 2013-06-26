@@ -8,6 +8,7 @@ mimeType = "text/html"
 boundary = "-------314159265358979323846"
 delimiter = "\r\n--#{boundary}\r\n"
 closeDelim = "\r\n--#{boundary}--"
+docId = null
 
 
 class Actions extends Spine.Controller
@@ -49,62 +50,80 @@ class Actions extends Spine.Controller
         @$savecancel.prop("disabled", true)
 
         title = @$title.val()
-        metadata =
-            mimeType: mimeType
-            title: title
-            parents: null
-            userPermission: null
-        base64Data = btoa(app.output.el.html())
-        body =
-            delimiter +
-            "Content-Type: application/json\r\n\r\n" +
-            JSON.stringify(metadata) +
-            delimiter +
-            "Content-Type: #{mimeType}\r\n" +
-            "Content-Transfer-Encoding: base64\r\n" +
-            "\r\n" +
-            base64Data +
-            closeDelim
 
         gapi.client.request(
-            path: "/upload/drive/v2/files",
-            method: "POST",
+            path: "/drive/v2/files"
+            method: "GET"
             params:
-                uploadType: "multipart",
-                convert: true
-            headers:
-                "Content-Type": "multipart/mixed; boundary=\"#{boundary}\""
-            body: body
+                maxResults: 1
+                q: "title = '#{title.replace('\'', '\\\'')}' and 'root' in parents and trashed = false and 'me' in owners"
             )
-            .execute(@proxy((doc) ->
-                @$title
-                    .prop("disabled", false)
-                    .hide()
-                @$upload
-                    .val(@$upload.data("oldval"))
-                    .prop("disabled", false)
-                    .hide()
-                @$savecancel
-                    .prop("disabled", false)
-                    .hide()
-                @$save
-                    .data("oldval", @$save.val())
-                    .val("Saved as #{title}")
-                    .show()
-                @$docurl
-                    .html($("<a>")
-                        .attr("href", doc.alternateLink)
-                        .attr("target", "_blank")
-                        .append($("<img>")
-                            .attr("src", doc.iconLink)
-                            .addClass("icon"))
-                        .text(doc.alternateLink))
-                setTimeout(@proxy(->
-                    @$save.val(@$save.data("oldval"))
-                    ), 3000)
-                app.editor.enable()
+            .execute(@proxy((results) ->
+                if results.items.length > 0
+                    docId = results.items[0].id
+                metadata =
+                    mimeType: mimeType
+                    title: title
+                    parents: null
+                    userPermission: null
+                base64Data = btoa(app.output.el.html())
+                body =
+                    delimiter +
+                    "Content-Type: application/json\r\n\r\n" +
+                    JSON.stringify(metadata) +
+                    delimiter +
+                    "Content-Type: #{mimeType}\r\n" +
+                    "Content-Transfer-Encoding: base64\r\n" +
+                    "\r\n" +
+                    base64Data +
+                    closeDelim
+                method = if docId then "PUT" else "POST"
+                path = "/upload/drive/v2/files"
+
+                if docId
+                    path += "/#{docId}"
+
+                gapi.client.request(
+                    path: path
+                    method: method
+                    params:
+                        uploadType: "multipart"
+                        convert: true
+                    headers:
+                        "Content-Type": "multipart/mixed; boundary=\"#{boundary}\""
+                    body: body
+                    )
+                    .execute(@proxy((doc) ->
+                        @$title
+                            .prop("disabled", false)
+                            .hide()
+                        @$upload
+                            .val(@$upload.data("oldval"))
+                            .prop("disabled", false)
+                            .hide()
+                        @$savecancel
+                            .prop("disabled", false)
+                            .hide()
+                        @$save
+                            .val("Saved as #{title}")
+                            .show()
+                        @$docurl
+                            .html($("<a>")
+                                .attr("href", doc.alternateLink)
+                                .attr("target", "_blank")
+                                .text(doc.alternateLink)
+                                .prepend($("<img>")
+                                    .attr("src", doc.iconLink)
+                                    .addClass("icon")))
+                        setTimeout(@proxy(->
+                            @$save.val("Save")
+                            ), 3000)
+                        app.editor.enable()
+                        return
+                        ))
                 return
                 ))
+
     savecancel: =>
         @$title.hide()
         @$upload.hide()
