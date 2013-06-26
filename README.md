@@ -11,4 +11,4 @@ And it all happens in the browser! There are no server-side components.
 
 ##License
 
-http://marksteve.mit-license.org
+MIT http://marksteve.mit-license.org
