@@ -1,6 +1,6 @@
 #DownDoc
 
-Write your Google documents in Markdown
+Write your Google documents in Markdown.
 
 And it all happens in the browser! There are no server-side components.
 
